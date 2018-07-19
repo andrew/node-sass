@@ -4,7 +4,7 @@
   },
   'targets': [
     {
-      'target_name': 'binding',
+      'target_name': 'sass',
       'win_delay_load_hook': 'true',
       'sources': [
         'src/binding.cpp',
@@ -85,6 +85,17 @@
             '-std=c++0x'
           ]
         }]
+      ]
+    },
+    {
+      "target_name": "action_after_build",
+      "type": "none",
+      "dependencies": [ "<(module_name)" ],
+      "copies": [
+        {
+          "files": [ "<(PRODUCT_DIR)/<(module_name).node" ],
+          "destination": "<(module_path)"
+        }
       ]
     }
   ]

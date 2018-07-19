@@ -32,7 +32,6 @@
     - '%AppData%\npm-cache'
 
   environment:
-    SKIP_SASS_BINARY_DOWNLOAD_FOR_CI: true
     matrix:
       - nodejs_version: 6
         GYP_MSVS_VERSION: 2015
@@ -40,18 +39,15 @@
       - nodejs_version: 8
         GYP_MSVS_VERSION: 2015
         APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-      - nodejs_version: 9
-        GYP_MSVS_VERSION: 2015
-        APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
       - nodejs_version: 10
-        GYP_MSVS_VERSION: 2015
-        APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+        GYP_MSVS_VERSION: 2017
+        APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 
   install:
     - ps: Install-Product node $env:nodejs_version $env:platform
     - node --version
     - npm --version
-    - npm install
+    - npm install --build-from-source=node-sass
 
   test: off
 
@@ -64,9 +60,9 @@
              Select-Object -Last 2 | Select-Object -First 1 } |
                .{ process { (
                   @( $BindingName,
-                       ( ( $_, "binding.node" ) -join '_' ) ),
-                  @( ".\build\Release\binding.pdb",
-                       ( ( $_, "binding.pdb" ) -join '_' ) )
+                       ( ( $_, "sass.node" ) -join '_' ) ),
+                  @( ".\build\Release\sass.pdb",
+                       ( ( $_, "sass.pdb" ) -join '_' ) )
                ) } } | % { Push-AppveyorArtifact $_[0] -FileName $_[1] }
 
   deploy:
@@ -87,7 +83,7 @@
   skip_branch_with_pr: true
   skip_tags: true
 
-  os: Visual Studio 2013
+  os: Visual Studio 2015
 
   configuration: testing
 
@@ -110,7 +106,6 @@
     - '%AppData%\npm-cache'
 
   environment:
-    SKIP_SASS_BINARY_DOWNLOAD_FOR_CI: true
     matrix:
       - nodejs_version: 6
         GYP_MSVS_VERSION: 2015
@@ -118,18 +113,15 @@
       - nodejs_version: 8
         GYP_MSVS_VERSION: 2015
         APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-      - nodejs_version: 9
-        GYP_MSVS_VERSION: 2015
-        APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
       - nodejs_version: 10
-        GYP_MSVS_VERSION: 2015
-        APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+        GYP_MSVS_VERSION: 2017
+        APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 
   install:
     - ps: Install-Product node $env:nodejs_version $env:platform
     - node --version
     - npm --version
-    - npm install
+    - npm install --build-from-source=node-sass
 
   test_script:
     - ps: set-location -path c:\projects\node_modules\node-sass
